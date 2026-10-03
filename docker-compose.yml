@@ -1,0 +1,15 @@
+# Self-hosted speech-to-text (free). Start with: docker compose up -d
+# "base" is a good CPU-only balance for a 12GB PC. Use "tiny" if it's slow, "small" if you have headroom.
+services:
+  whisper:
+    image: onerahmet/openai-whisper-asr-webservice:latest
+    ports:
+      - "9000:9000"
+    environment:
+      ASR_MODEL: base
+      ASR_ENGINE: openai_whisper
+    volumes:
+      - whisper-cache:/root/.cache
+    restart: unless-stopped
+volumes:
+  whisper-cache:

@@ -1,0 +1,11 @@
+node_modules
+dist/
+.expo/
+.env
+.env.*
+!.env.example
+agent/logs/
+*.log
+.DS_Store
+.aider*
+!.aider.conf.yml

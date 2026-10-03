@@ -1,0 +1,10 @@
+# Used when you run `aider` by hand in this folder (the agent runner passes its own flags).
+model: gemini/gemini-2.5-flash
+auto-commits: false
+check-update: false
+analytics-disable: true
+read:
+  - spec.md
+  - MILESTONES.md
+  - CONVENTIONS.md
+  - agent/knowledge/lessons.md
