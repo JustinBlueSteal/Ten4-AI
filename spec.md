@@ -26,9 +26,12 @@ radio traffic without needing to already know 10-code terminology.
 - **Feed discovery**: auto-detect the user's local feed(s) via device
   geolocation on open; manual search as an alternative.
 - **Playback**: tap a feed to play its live audio stream.
-- **Real-time closed captions**: spoken 10-codes transcribed and translated
-  into plain language as the feed plays, localized to the device's
-  language — functions like live closed captioning.
+- **Real-time closed captions**: audio is transcribed to text, 10-codes in
+  that text are recognized, and the caption shown to the user includes
+  BOTH the spoken code and its plain-language meaning (e.g. "10-4 —
+  Acknowledged"), localized to the device's language. A caption that only
+  shows a paraphrase and drops the code does not meet this requirement —
+  the code itself must be visible, not just its meaning.
 - **Editable 10-code dictionary**: starter set of mappings, user-editable,
   persists across app restarts (M10).
 - **Settings-based diagnostics**: a built-in "Run connection tests" check
