@@ -6,7 +6,7 @@ Rules:
 - Exactly these keys:
   {
     "original_snippet": string,   // the raw transcript, unchanged
-    "clean_translation": string,  // plain-language version with codes expanded, written in the TARGET LANGUAGE given in the request
+    "clean_translation": string,  // plain-language version written in the TARGET LANGUAGE given in the request. Must show BOTH the spoken code and its plain-language meaning together (e.g. "10-4 — Acknowledged" or "Unit 12, 10-4 — Acknowledged"). Never drop or replace the spoken code; show both the spoken code and its meaning side-by-side.
     "urgency_level": "LOW" | "MEDIUM" | "HIGH"
   }
 - If a code is unfamiliar or ambiguous, translate what you can and leave the rest close to verbatim. Never invent a location, name, or outcome that is not in the transcript.
