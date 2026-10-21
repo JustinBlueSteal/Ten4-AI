@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { colors } from "../theme";
 import { listSystems, OpenMhzError, type OmhzSystem } from "../api/openmhz";
-import { getMyPlace, systemsNear } from "../lib/location";
+import { getMyPlace, hasLocalMatch, systemsNear } from "../lib/location";
 
 export default function FeedsScreen({ onPick }: { onPick: (s: OmhzSystem) => void }) {
   const [systems, setSystems] = useState<OmhzSystem[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [nearLabel, setNearLabel] = useState<string | null>(null);
   const [near, setNear] = useState<OmhzSystem[] | null>(null);
@@ -20,7 +21,7 @@ export default function FeedsScreen({ onPick }: { onPick: (s: OmhzSystem) => voi
       .catch((e) =>
         setError(
           e instanceof OpenMhzError && e.status === 403
-            ? "OpenMHz blocked this request (HTTP 403). That is the M7 blocker. Open Settings > Run connection tests and note the result."
+            ? "OpenMHz blocked this request (HTTP 403). Open Settings > Run connection tests and note the result."
             : `Couldn't load feeds: ${e instanceof Error ? e.message : String(e)}`
         )
       );
@@ -30,14 +31,25 @@ export default function FeedsScreen({ onPick }: { onPick: (s: OmhzSystem) => voi
   const useMyLocation = async () => {
     if (!systems) return;
     setLocating(true);
+    setError(null);
+    setNotice(null);
     try {
       const place = await getMyPlace();
+      const label = [place.city, place.county, place.stateAbbr].filter(Boolean).join(", ");
       const matches = systemsNear(systems, place);
-      setNear(matches);
-      setNearLabel([place.city, place.county, place.stateAbbr].filter(Boolean).join(", "));
-      if (!matches.length) setError("No feeds matched your location. Try the search box.");
-      else setError(null);
+      setNearLabel(label || "your location");
+      if (!matches.length) {
+        setNear(null);
+        setNotice(`No feeds are listed for ${label || "your area"}. Showing all feeds; try the search box.`);
+      } else {
+        setNear(matches);
+        if (!hasLocalMatch(matches, place)) {
+          setNotice(`No feeds listed for ${place.city ?? "your city"} itself, so these are other feeds in ${place.stateName ?? place.stateAbbr}.`);
+        }
+      }
     } catch (e) {
+      setNear(null);
+      setNearLabel(null);
       setError(e instanceof Error ? e.message : String(e));
     } finally {
       setLocating(false);
@@ -69,10 +81,11 @@ export default function FeedsScreen({ onPick }: { onPick: (s: OmhzSystem) => voi
         <Text style={styles.btnText}>{locating ? "Locating…" : "Use my location"}</Text>
       </Pressable>
       {nearLabel && !query ? <Text style={styles.note}>Feeds near {nearLabel}</Text> : null}
+      {notice && !query ? <Text style={styles.noticeText}>{notice}</Text> : null}
       {error ? (
         <View style={styles.errBox}>
           <Text style={styles.errText}>{error}</Text>
-          <Pressable onPress={load}><Text style={styles.retry}>Retry</Text></Pressable>
+          {!systems ? <Pressable onPress={load}><Text style={styles.retry}>Retry</Text></Pressable> : null}
         </View>
       ) : null}
       {!systems && !error ? <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} /> : null}
@@ -96,6 +109,7 @@ const styles = StyleSheet.create({
   btn: { backgroundColor: colors.accent, borderRadius: 10, padding: 12, alignItems: "center", marginBottom: 8 },
   btnText: { color: "#fff", fontWeight: "700" },
   note: { color: colors.muted, marginBottom: 6 },
+  noticeText: { color: colors.muted, fontSize: 12, marginBottom: 8 },
   row: { backgroundColor: colors.panel, borderRadius: 10, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: colors.border },
   rowTitle: { color: colors.text, fontWeight: "700" },
   rowSub: { color: colors.muted, marginTop: 2, fontSize: 12 },

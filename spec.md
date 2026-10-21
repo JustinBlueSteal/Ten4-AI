@@ -79,8 +79,8 @@ radio traffic without needing to already know 10-code terminology.
 | Mobile framework | Expo SDK 57 (RN 0.86.3, React 19.2.3, TS 6.0.3) | Current stable; SDK 58 is beta-only, skip until it ships stable *and* the App Store/Play Store Expo Go builds support it |
 | Dev client | Expo Go, latest | Now requires logging into the **same Expo account** in both the CLI and the phone app to run a dev project — new requirement, wasn't true earlier in 2026 |
 | Transcription | Self-hosted Whisper ASR (Docker) | Free, local, no API cost |
-| Translation / plain-language | Gemini API free tier (`gemini-2.5-flash` or current free-tier flash model) | Runs on Google's servers — chosen specifically because local Ollama inference froze Justin's machine (12GB RAM, CPU-only) |
-| Coding agent | Aider + Gemini (via `agent/` duty-file system) | Free tier, same reasoning as above — do not switch back to local Ollama for this machine |
+| Translation / plain-language | Gemini API free tier (`gemini-3.1-flash-lite`) | Runs on Google's servers — chosen because local Ollama inference froze Justin's machine (12GB RAM, CPU-only). `gemini-2.5-flash` stopped working for new API keys (Google restricted it to pre-existing users); `gemini-3.8-flash` is free but capped around 20 requests/day, too tight for live captioning — 3.1 Flash-Lite's free tier (~500 req/day) fits this workload |
+| Coding agent | Aider + Gemini (`gemini-3.1-flash-lite`, same reasoning) | Free tier, same reasoning as above — do not switch back to local Ollama for this machine |
 | Audio source | OpenMHz, client-side only | Server-side calls return HTTP 403; Broadcastify explicitly disallows apps that wrap their catalog (see §7) |
 | Repo/CI | GitHub free tier | Optional: `agent/schedule.ps1` for nightly local runs, or `.github/workflows/agent.yml` for cloud runs |
 
@@ -118,6 +118,12 @@ radio traffic without needing to already know 10-code terminology.
   upgrade to it for this project until it's stable and the App Store/Play
   Store Expo Go builds confirm support, to avoid being stuck mid-migration
   before launch.
+- **Always launch aider with the model flag set.** It's easy to forget and
+  default to whatever model was last used. The exact command, run from
+  inside `ten4-clear`:
+  ```
+  & "$env:USERPROFILE\.local\bin\aider.exe" --model gemini/gemini-3.1-flash-lite
+  ```
 
 ## Changelog
 

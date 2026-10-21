@@ -1,0 +1,59 @@
+name: guardrail
+
+# Runs on every pull request, including the ones the coding agents open.
+# It never merges anything. It posts a PASS / CONCERNS / FAIL comment and
+# turns the check red on FAIL. Justin merges by hand.
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: guardrail-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Typecheck mobile
+        id: tsc_mobile
+        continue-on-error: true
+        working-directory: mobile
+        run: |
+          npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+          npx tsc --noEmit
+
+      - name: Typecheck backend
+        id: tsc_backend
+        continue-on-error: true
+        working-directory: backend
+        run: |
+          npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+          npx tsc --noEmit
+
+      - name: Guardrail review
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          TSC_MOBILE: ${{ steps.tsc_mobile.outcome }}
+          TSC_BACKEND: ${{ steps.tsc_backend.outcome }}
+        run: node agent/guardrail/review.mjs

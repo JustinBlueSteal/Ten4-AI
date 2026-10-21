@@ -9,7 +9,7 @@ Do the parts in order. Every step says what you should see. If you don't see it,
 
 ## Part 0 — Put the folder in place (5 min)
 
-1. Unzip `ten4-text.zip` to a **new** folder, e.g. `C:\Users\Justin\Desktop\ten4-text`.
+1. Unzip `ten4-text.zip` to a **new** folder, e.g. `C:\Users\Justin\Desktop\10-4 CEAR\ten4-clear>`.
    Don't copy it over your old `10-4 CEAR\ten4-clear` folder; keep that as a backup.
 2. Open PowerShell in that folder and run:
    ```
