@@ -28,3 +28,5 @@ Whisper, then asks an LLM to expand codes into plain language in the target lang
 code dictionary. Captions come back colour-coded by urgency.
 
 The web/Capacitor track (`dispatch-app`) is a separate track and is not part of this folder.
+# Ten4-AI
+
