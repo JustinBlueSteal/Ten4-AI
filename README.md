@@ -28,5 +28,33 @@ Whisper, then asks an LLM to expand codes into plain language in the target lang
 code dictionary. Captions come back colour-coded by urgency.
 
 The web/Capacitor track (`dispatch-app`) is a separate track and is not part of this folder.
-# Ten4-AI
+
+## Core Milestones Foundation (M1–M4)
+- **M1 (Concept)**: Live emergency service radio directory (police, fire, EMS) with real-time plain-language closed captioning. Client-side audio requests prevent server HTTP 403 blocks.
+- **M2 (Demo Scope)**: 4-screen Expo mobile application (`Feeds`, `Listen`, `Codes`, `Settings`) backed by Express, Docker Whisper ASR, and Gemini LLM.
+- **M3 (Real Pipeline Only)**: No mock/demo data anywhere in working builds. Audio is downloaded by the mobile client and processed live by Whisper and Gemini.
+- **M4 (Native Mobile Track)**: Expo SDK 57 / React Native 0.86 / React 19 targeting iOS and Android natively using `expo-audio` and `AsyncStorage`.
+
+## Quick Start Guide
+
+### 1. Backend Setup
+```bash
+cd backend
+npm install
+cp .env.example .env  # Configure GEMINI_API_KEY
+npm run dev
+```
+
+### 2. Mobile App Setup
+```bash
+cd mobile
+npm install
+npm run start
+```
+
+### 3. Pipeline Verification
+Ensure Docker Whisper is running locally (`docker-compose up -d`) and test the backend health:
+```bash
+curl http://localhost:4000/health
+```
 
