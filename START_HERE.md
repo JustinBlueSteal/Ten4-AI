@@ -89,7 +89,8 @@ fails. You review and merge. Details: `agent/README.md`.
 1. In the project's root folder (not backend/): `copy .env.example .env`, open it, paste the same
    Gemini key after `GEMINI_API_KEY=`.
 2. Health check: `node agent/run.mjs --doctor`
-   ✅ Expect `OK` on all five lines. (If aider is missing: `pip install aider-chat`.)
+   ✅ Expect `OK` on all five lines. (If aider is missing, create and activate a Python virtual environment:
+   `python3 -m venv venv` and `source venv/bin/activate` or `.\venv\Scripts\Activate.ps1`, then run `pip install aider-chat`.)
 3. See your starting duties: `node agent/run.mjs --list`
 4. Rehearse without spending anything: `node agent/run.mjs next-milestone --dry-run`
    Prints exactly what the agent would be told.
