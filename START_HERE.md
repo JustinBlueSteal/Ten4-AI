@@ -45,6 +45,11 @@ Do the parts in order. Every step says what you should see. If you don't see it,
    ✅ You should see: `Ten4 Text backend on :4000  (LLM: gemini)`. Leave this window open.
 4. **Check it.** In a second PowerShell window: `curl.exe http://localhost:4000/health`
    ✅ Expect `"ok":true,"whisper":true,...,"llmConfigured":true`.
+5. **Run the E2E pipeline test tool.**
+   ```
+   node tools/test-e2e-pipeline.mjs
+   ```
+   ✅ Tests health and sends real audio bytes to `/caption`, confirming transcription and 10-code interpretation structure.
 
 Why Gemini and not Ollama for the AI step? Your PC froze running a 7B model locally. Gemini's free
 tier runs on Google's servers instead. To go fully local later, set `LLM_PROVIDER=ollama` in `backend/.env`.

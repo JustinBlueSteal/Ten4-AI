@@ -56,5 +56,6 @@ npm run start
 Ensure Docker Whisper is running locally (`docker-compose up -d`) and test the backend health:
 ```bash
 curl http://localhost:4000/health
+node tools/test-e2e-pipeline.mjs
 ```
 
