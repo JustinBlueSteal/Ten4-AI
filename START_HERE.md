@@ -45,6 +45,11 @@ Do the parts in order. Every step says what you should see. If you don't see it,
    ✅ You should see: `Ten4 Text backend on :4000  (LLM: gemini)`. Leave this window open.
 4. **Check it.** In a second PowerShell window: `curl.exe http://localhost:4000/health`
    ✅ Expect `"ok":true,"whisper":true,...,"llmConfigured":true`.
+5. **Run the E2E pipeline test tool.**
+   ```
+   node tools/test-e2e-pipeline.mjs
+   ```
+   ✅ Tests health and sends real audio bytes to `/caption`, confirming transcription and 10-code interpretation structure.
 
 Why Gemini and not Ollama for the AI step? Your PC froze running a 7B model locally. Gemini's free
 tier runs on Google's servers instead. To go fully local later, set `LLM_PROVIDER=ollama` in `backend/.env`.
@@ -89,7 +94,8 @@ fails. You review and merge. Details: `agent/README.md`.
 1. In the project's root folder (not backend/): `copy .env.example .env`, open it, paste the same
    Gemini key after `GEMINI_API_KEY=`.
 2. Health check: `node agent/run.mjs --doctor`
-   ✅ Expect `OK` on all five lines. (If aider is missing: `pip install aider-chat`.)
+   ✅ Expect `OK` on all five lines. (If aider is missing, create and activate a Python virtual environment:
+   `python3 -m venv venv` and `source venv/bin/activate` or `.\venv\Scripts\Activate.ps1`, then run `pip install aider-chat`.)
 3. See your starting duties: `node agent/run.mjs --list`
 4. Rehearse without spending anything: `node agent/run.mjs next-milestone --dry-run`
    Prints exactly what the agent would be told.

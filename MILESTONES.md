@@ -15,20 +15,29 @@ since its own docs state the live end-to-end path hasn't been run yet.
 
 ### M1 — Concept agreed: emergency radio directory
 **Status:** verified
-**Evidence:** Concept and constraints confirmed in conversation; captured in
-`spec.md` §1–2.
+**Goal:** Define the product vision for a live emergency service radio directory (fire, police, EMS across US cities) paired with real-time closed captioning and 10-code translation into plain language in the device's native language.
+**Acceptance criteria:** Documented constraints and vision in `spec.md` §1–2. Direct client-side polling of OpenMHz feeds established as the primary audio source to prevent server HTTP 403 blocks.
+**Evidence:** Concept and architecture constraints confirmed and captured in `spec.md` §1–2.
 
 ### M2 — Demo scope approved
 **Status:** verified
+**Goal:** Establish the foundational multi-screen mobile experience and backend pipeline architecture required for a working prototype.
+**Scope:**
+- Mobile App: 4 core screens (`FeedsScreen`, `ListenScreen`, `DictionaryScreen`, `SettingsScreen`) built with React Native / Expo SDK 57.
+- Backend Pipeline: Node/Express service interfacing with Dockerized Whisper ASR for transcription and Gemini API free-tier for plain-language translation.
+**Evidence:** App layout, screen navigation in `App.tsx`, and pipeline contract in `backend/src/pipeline` implemented and reviewed.
 
 ### M3 — Decision: skip mock captions, build real pipeline directly
 **Status:** verified
-**Note:** This decision was later generalized into a standing project rule —
-no mock/demo/test data anywhere in the working build, ever (see `spec.md`
-§4 and §8).
+**Goal:** Eliminate placeholder/mock models and synthetic transcriptions in favor of end-to-end integration with real Whisper ASR audio processing and Gemini LLM interpretation.
+**Acceptance criteria:** Standing project constraint enforced across all modules: no mock data, fake streams, or dummy captions in working builds (see `spec.md` §4).
+**Evidence:** `backend/src/index.ts` processes real `audioBase64` payloads from OpenMHz streams directly through `transcribe.ts` and `interpret.ts`.
 
 ### M4 — Native mobile scope adopted (iOS/Android)
 **Status:** verified
+**Goal:** Target cross-platform mobile devices (iOS and Android) using React Native and Expo SDK 57 for audio playback and caption display.
+**Acceptance criteria:** Client downloads call audio directly using Expo APIs, plays audio via `expo-audio`, and posts base64 audio buffers to backend for real-time captions.
+**Evidence:** `mobile/src/screens/ListenScreen.tsx` and `mobile/src/api/openmhz.ts` implemented and compiled clean without web/desktop framework dependencies.
 
 ### M5 — Ten4 Text (native track) spec resolved
 **Status:** verified
@@ -121,6 +130,7 @@ confirmed working via the M9 backend health check.
 ---
 
 ## Changelog
+- 2026-10-21: Expanded M1–M4 milestones with explicit goals, scope, acceptance criteria, and evidence.
 - 2026-09-30: Rewrote against the new `ten4-text` scaffold. M7, M9, M10
   re-scoped to the new codebase's real verification paths (connection
   tests, health check, restart check) instead of generic acceptance
