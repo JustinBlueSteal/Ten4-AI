@@ -5,12 +5,15 @@ import { transcribe } from "./pipeline/transcribe.js";
 import { interpret } from "./pipeline/interpret.js";
 import { SerialQueue } from "./pipeline/queue.js";
 import { LlmError } from "./pipeline/llm.js";
+import adminRouter from "./routes/admin.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: "15mb" }));
 
 const queue = new SerialQueue(config.llmMinIntervalMs);
+
+app.use("/admin", adminRouter);
 
 app.get("/health", async (_req, res) => {
   let whisper = false;

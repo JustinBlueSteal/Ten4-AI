@@ -9,13 +9,15 @@ import FeedsScreen from "./src/screens/FeedsScreen";
 import ListenScreen from "./src/screens/ListenScreen";
 import DictionaryScreen from "./src/screens/DictionaryScreen";
 import SettingsScreen from "./src/screens/SettingsScreen";
+import AdminDashboardScreen from "./src/screens/AdminDashboardScreen";
 
-type Tab = "feeds" | "listen" | "dictionary" | "settings";
+type Tab = "feeds" | "listen" | "dictionary" | "settings" | "admin";
 const TABS: { id: Tab; label: string }[] = [
   { id: "feeds", label: "Feeds" },
   { id: "listen", label: "Listen" },
   { id: "dictionary", label: "Codes" },
   { id: "settings", label: "Settings" },
+  { id: "admin", label: "Admin" },
 ];
 
 function deviceLanguage(): string {
@@ -68,6 +70,7 @@ export default function App() {
         {tab === "listen" && <ListenScreen system={system} settings={settings} dictionary={dictionary} onChooseFeed={() => setTab("feeds")} />}
         {tab === "dictionary" && <DictionaryScreen dictionary={dictionary} onChange={updateDictionary} />}
         {tab === "settings" && <SettingsScreen settings={settings} onChange={updateSettings} />}
+        {tab === "admin" && <AdminDashboardScreen />}
       </View>
       <View style={styles.tabs}>
         {TABS.map((t) => (
