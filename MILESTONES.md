@@ -1,13 +1,27 @@
 # MILESTONES — Ten4 Text
+NOTE FROM JUSTIN: This is a team built working document that can fully be modified to achieve the end result we are looking for in our mission. It does not matter how we get there, if we get there. you may invent, modify, add, remove, update, regress; anything you see fit to reach our final destination. 
 
-Each milestone closes with evidence (a passing test, a working build, or an
-explicit manual verification note from Justin) — not just a claim that it's
-done. Status values: `planned`, `in-progress`, `verified`, `shipped`.
+We seek to translate emergency radio and internet streams that use 10-4 among other code that is not easy for the common public to understand. We will provide acurate live feeds for local emergency streams for our users on their devices and we will also allow the browsing of existing other locations. we will help the public understand what they are hearing in a potentially critical emergency scenario. It can also be used for personal entertainment and informational research as well. 
+
+DO NOT REMOVE ANYTHING ABOVE THIS SENTENCE. YOU MUST NOT MODIFIY A SINGLE CHARACTER AVOVE HERE! 
+You may modify and make your improvements below. be sure you add a note with your username or login information when you make the update. 
+#
+#
+#
+#
+MILESTONES - You can modify. 
+
+Each milestone closes with evidence (a passing test, a working build, a note from jules or from justin) — not just a claim that it's
+done. 
+
+Status values: `planned`, `in-progress`, `verified`, `shipped`.
 
 **2026-09-30 note:** the project moved from the `ten4-clear` folder to a new,
 more complete `ten4-text` scaffold (Docker Whisper, Gemini backend, built-in
 self-developing agent system). Early decisions below (M1–M6, M7B) carry
-forward unchanged since they're decisions, not code. Implementation
+forward unchanged (but can be changed or updated or removed or added) since they're decisions, not code. 
+Implementation
+
 milestones (M7, M9, M10, M11, M12) are re-scoped against the new scaffold,
 since its own docs state the live end-to-end path hasn't been run yet.
 
@@ -27,13 +41,13 @@ since its own docs state the live end-to-end path hasn't been run yet.
 - Backend Pipeline: Node/Express service interfacing with Dockerized Whisper ASR for transcription and Gemini API free-tier for plain-language translation.
 **Evidence:** App layout, screen navigation in `App.tsx`, and pipeline contract in `backend/src/pipeline` implemented and reviewed.
 
-### M3 — Decision: skip mock captions, build real pipeline directly
+### M3 — Decision: build real pipeline 
 **Status:** verified
 **Goal:** Eliminate placeholder/mock models and synthetic transcriptions in favor of end-to-end integration with real Whisper ASR audio processing and Gemini LLM interpretation.
 **Acceptance criteria:** Standing project constraint enforced across all modules: no mock data, fake streams, or dummy captions in working builds (see `spec.md` §4).
 **Evidence:** `backend/src/index.ts` processes real `audioBase64` payloads from OpenMHz streams directly through `transcribe.ts` and `interpret.ts`.
 
-### M4 — Native mobile scope adopted (iOS/Android)
+### M4 — Native mobile scope adopted + website (iOS/Android)
 **Status:** verified
 **Goal:** Target cross-platform mobile devices (iOS and Android) using React Native and Expo SDK 57 for audio playback and caption display.
 **Acceptance criteria:** Client downloads call audio directly using Expo APIs, plays audio via `expo-audio`, and posts base64 audio buffers to backend for real-time captions.
@@ -41,10 +55,10 @@ since its own docs state the live end-to-end path hasn't been run yet.
 
 ### M5 — Ten4 Text (native track) spec resolved
 **Status:** verified
-**Evidence:** OpenMHz as the sole client-side audio source; Broadcastify
-excluded from direct integration.
+**Evidence:** OpenMHz as primary for client-side audio source; Broadcastify will be considered as well if we are able to scrape it with a successful return.
+AGAIN, BROADCAST IS NOT excluded from direct integration, nor is other locally hosted and published broadcast feeds from local emergency organizations.
 
-### M6 — Local dev stack running (original ten4-clear folder)
+### M6 — Local dev stack running in parallel to GitHub repo which should ideally be used as the source of truth for all code work. (ten4-clear - copy folder)
 **Status:** verified (superseded by the new scaffold's own stack, see M9)
 
 ### M7 — Verify OpenMHz reachability from the mobile client
@@ -54,9 +68,8 @@ without the HTTP 403 that blocks server-side requests.
 **Acceptance criteria:** In the new scaffold's Settings → "Run connection
 tests," the line `OpenMHz from this device: HTTP 200 (OK, M7 evidence)`
 appears on a real device over real Wi-Fi.
-**Next action:** Justin to run Part 1–2 of `docs/GETTING_STARTED.md` on his
-phone and report back whatever that line actually says — pass or fail is
-both valid evidence, it just needs to be real.
+**Next action:** Jules to update the steps in documentation for QA agent perform.
+The QA Agent action will be to run Part 1–2 of `docs/GETTING_STARTED.md` in a valid test environment possibly a virtual moch phone and report back whatever that line actually says — pass or fail + notes ideally.
 
 ### M7B — Feed coverage strategy beyond OpenMHz (combo/phased)
 **Status:** planned
@@ -75,7 +88,7 @@ upgrade over the earlier manual aider setup from the `ten4-clear` folder.
 five lines; `node agent/run.mjs next-milestone --dry-run` prints a sane
 plan; one real `node agent/run.mjs next-milestone` run completes and
 produces a reviewable branch.
-**Next action:** Justin to run the doctor check and the dry run, then one
+**Next action:** QA Agent to run the doctor check and the dry run, then one
 real run, and report what each prints.
 **Note:** The earlier aider+Gemini setup (confirmed working against the old
 `ten4-clear` repo) proved the free-tool approach is viable on this
